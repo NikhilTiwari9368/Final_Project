@@ -1,88 +1,58 @@
-<!-- login.html -->
 
-{% block title %}Login{% endblock %}
-
-{% block content %}
-<div class="container-fluid bg-light min-vh-100 d-flex align-items-center justify-content-center">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-lg rounded-3 border-light">
-                <div class="card-header text-center bg-primary text-white">
-                    <h2>Login to Your Account</h2>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Login{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="/static/css/login.css">
+    <!-- Fontawesome CDN Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+<body>
+  <div class="container">
+    <input type="checkbox" id="flip">
+    <div class="cover">
+      <div class="front">
+        <img src="/static/img/herbal_1.jpg" alt="">
+        <div class="text">
+          <span class="text-1">Welcome to  <br> Dixit Health Care</span>
+          <span class="text-2">Let's get connected</span>
+        </div>
+      </div>
+      <div class="back">
+        
+        <div class="text">
+        </div>
+      </div>
+    </div>
+    <div class="forms">
+        <div class="form-content">
+          <div class="login-form">
+            <div class="title">Login to Your Account</div>
+            <form method="post">
+              {% csrf_token %}
+              <div class="input-boxes">
+                <div class="input-box">
+                  <i class="fas fa-user"></i>
+                  <input type="text" id="id_username" name="username" placeholder="Enter your username or email" required>
                 </div>
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="form-group mb-4">
-                            <label for="id_username" class="form-label">Username or Email</label>
-                            <input type="text" id="id_username" name="username" class="form-control" placeholder="Enter your username or email" required>
-                        </div>
-                        <div class="form-group mb-4">
-                            <label for="id_password" class="form-label">Password</label>
-                            <input type="password" id="id_password" name="password" class="form-control" placeholder="Enter your password" required>
-                        </div>
-                        <div class="d-grid mb-4">
-                            <button type="submit" class="btn btn-primary btn-block">Login</button>
-                        </div>
-                    </form>
+                <div class="input-box">
+                  <i class="fas fa-lock"></i>
+                  <input type="password" id="id_password" name="password" placeholder="Enter your password" required>
                 </div>
-                <div class="card-footer text-center">
-                    <p>Don't have an account? <a href="{% url "healthcare_centre" %}">Sign up here</a>.</p>
+                <div class="text"><a href="#">Forgot password?</a></div>
+                <div class="button input-box">
+                  <input type="submit" value="Login">
                 </div>
-            </div>
+                <div class="text sign-up-text">Don't have an account? <a href="{% url 'healthcare_centre' %}">Sign up here</a></div>
+                <button> <a href="{% url 'index' %}"> Home </a></button>
+              </div>
+            </form>
+          </div>
         </div>
     </div>
-</div>
-{% endblock %}
-
-{% block extra_css %}
-<style>
-    .container-fluid {
-        background-color: #f0f8ff; /* Light background color */
-        min-height: 100vh;
-        padding: 2rem; /* Padding around the container */
-    }
-    
-    .card {
-        background-color: #ffffff; /* White background for the card */
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-        margin: 2rem; /* Margin around the card for spacing */
-    }
-    
-    .card:hover {
-        transform: translateY(-5px);
-    }
-    
-    .card-header {
-        background-color: #007bff; /* Primary blue for header */
-    }
-    
-    .card-footer {
-        background-color: #e9ecef; /* Light grey for footer */
-    }
-    
-    .form-control {
-        border-radius: 0.25rem;
-    }
-    
-    .btn-primary {
-        border-radius: 0.25rem;
-        transition: background-color 0.2s ease;
-    }
-    
-    .btn-primary:hover {
-        background-color: #0056b3;
-    }
-    
-    .form-group label {
-        font-weight: bold;
-    }
-
-    /* Additional spacing for form elements */
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-</style>
-{% endblock %}
+  </div>
+</body>
+</html>
