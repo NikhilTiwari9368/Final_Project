@@ -7,21 +7,19 @@
             <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Our Products</h5>
             <h1 class="display-4">Best Ayurveda Products</h1>
         </div>
-        <div class="owl-carousel team-carousel position-relative">
+        <div class="row">
             {% for product in products %}
-            <div class="team-item">
-                <div class="row g-0 bg-light rounded overflow-hidden">
-                    <div class="col-12 col-sm-5 h-100">
-                        <img class="img-fluid h-100" src="{{ product.image.url }}" style="object-fit: cover;" alt="Product Image">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="bg-light rounded overflow-hidden">
+                    <div class="product-image" style="height: 200px; overflow: hidden;">
+                        <img class="img-fluid" src="{{ product.image.url }}" style="width: 100%; height: 100%; object-fit: cover;" alt="Product Image">
                     </div>
-                    <div class="col-12 col-sm-7 h-100 d-flex flex-column">
-                        <div class="mt-auto p-4">
-                            <h3>{{ product.name }}</h3>
-                            <h6 class="fw-normal fst-italic text-primary mb-4">{{ product.usage }}</h6>
-                            <p class="m-0">{{ product.description }}</p>
-                        </div>
-                        <div class="d-flex mt-auto border-top p-4">
-                            <p class="m-0">Price: {{ product.price }}</p>
+                    <div class="p-4">
+                        <h3>{{ product.name }}</h3>
+                        <h6 class="fw-normal fst-italic text-primary mb-4">{{ product.usage }}</h6>
+                        <p class="m-0">{{ product.description }}</p>
+                        <div class="border-top mt-3 pt-2">
+                            <p class="m-0 fw-bold" style="font-size: 1.2em; color: #000000;">Price: {{ product.price }}</p>
                             <p class="m-0">Please contact your team to buy the product</p>
                         </div>
                     </div>
@@ -33,6 +31,5 @@
 </div>
 
 <!-- Team End -->
-
 
 {% include "footer.html" %}
