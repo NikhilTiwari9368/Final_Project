@@ -44,33 +44,33 @@ def healthcare_centre(request):
         # Check if the email already exists
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists. Please log in.")
-            return render(request, 'signup.html')  # Replace with your signup template
+            return render(request, 'signup.html')
 
-        # Continue with your existing password checks here
+        # Password validations
         if password1 != password2:
             messages.error(request, "Passwords do not match.")
-            return render(request, 'signup.html')  # Replace with your signup template
+            return render(request, 'signup.html')
 
         if len(password1) < 8:
             messages.error(request, "Password must contain at least 8 characters.")
-            return render(request, 'signup.html')  # Replace with your signup template
+            return render(request, 'signup.html')
 
         if password1.isnumeric():
             messages.error(request, "Password cannot be entirely numeric.")
-            return render(request, 'signup.html')  # Replace with your signup template
+            return render(request, 'signup.html')
 
         if name.lower() in password1.lower() or email.split('@')[0].lower() in password1.lower():
             messages.error(request, "Password is too similar to your personal information.")
-            return render(request, 'signup.html')  # Replace with your signup template
+            return render(request, 'signup.html')
 
-        # If everything is valid, create the user
+        # Create the user (username can be duplicated)
         user = User.objects.create_user(username=name, email=email, password=password1)
         user.save()
+
         messages.success(request, "Account created successfully. You can log in now.")
-        return redirect('LoginPage')  # Redirect to login page or another page
+        return redirect('LoginPage')
 
     return render(request, 'signup.html')
-        
 
 def LoginPage(request):
     if request.method == "POST":
