@@ -1,31 +1,24 @@
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+<head>
     <meta charset="UTF-8">
     <title>{% block title %}Sign Up{% endblock %}</title>
     {% load static %}
-    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="/static/css/login1.css">
     <!-- Fontawesome CDN Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
+</head>
 <body>
   <div class="container">
-    <input type="checkbox" id="flip">
     <div class="cover">
       <div class="front">
-        <img src="/static/img/herbal_1.jpg" alt="">
+        {% comment %} <img src="/static/img/herbal_1.jpg" alt=""> {% endcomment %}
         <div class="text">
           <span class="text-1">Welcome to <br> Dixit Health Care</span>
-          <span class="text-2">Join us today!</span>
         </div>
       </div>
-      <div class="back">
-        
-        <div class="text">
-        </div>
-      </div>
+      <div class="back"></div>
     </div>
     <div class="forms">
         <div class="form-content">
@@ -54,7 +47,6 @@
                   <input type="submit" value="Sign Up">
                 </div>
                 <div class="text sign-up-text">Already have an account? <a href="{% url 'LoginPage' %}">Login here</a></div>
-                <button> <a href="{% url 'index' %}"> Home </a></button>
               </div>
             </form>
           </div>
@@ -66,11 +58,38 @@
     document.getElementById('signupForm').addEventListener('submit', function(event) {
         var password1 = document.getElementById('id_password1').value;
         var password2 = document.getElementById('id_password2').value;
+        var name = document.getElementById('id_name').value;
+        var email = document.getElementById('id_email').value;
 
+        // Check if passwords match
         if (password1 !== password2) {
             event.preventDefault();
             alert('Passwords do not match. Please try again.');
+            return;
         }
+
+        // Check password length
+        if (password1.length < 8) {
+            event.preventDefault();
+            alert('Password must contain at least 8 characters.');
+            return;
+        }
+
+        // Check if password is numeric
+        if (/^\d+$/.test(password1)) {
+            event.preventDefault();
+            alert('Password cannot be entirely numeric.');
+            return;
+        }
+
+        // Check if password is similar to personal information (basic check)
+        if (password1.toLowerCase().includes(name.toLowerCase()) || password1.toLowerCase().includes(email.toLowerCase().split('@')[0])) {
+            event.preventDefault();
+            alert('Password is too similar to your personal information.');
+            return;
+        }
+
+        // You can add a commonly used password check using an external service or server-side.
     });
   </script>
 </body>

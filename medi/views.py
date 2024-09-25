@@ -10,6 +10,8 @@ from django.contrib.auth import authenticate, login , logout
 from django.contrib.auth.models import User 
 from django.contrib.auth.decorators import login_required
 from Precaution.models import Disease 
+from django.contrib import messages
+from django.contrib.auth.models import User
 
 def disease_info(request):
     # Initialize the disease variable
@@ -48,20 +50,28 @@ def healthcare_centre(requests):
     return render(requests, "signup.html")
         
 
-def LoginPage(requests):
-    if requests.method == "POST":
-        name = requests.POST.get('username')
-        password = requests.POST.get('password')
-        user = authenticate(username=name, password=password)
-        if user is not None:
-            login(requests , user)
-            return redirect("information")
+def LoginPage(request):
+    if request.method == "POST":
+        name = request.POST.get('username').lower()  # Convert the username to lowercase
+        password = request.POST.get('password')
         
-        else:
-            return HttpResponse("Your Password is incorrect !!!")
+        try:
+            # Try to find the user with a case-insensitive search
+            user_obj = User.objects.get(username__iexact=name)
+            user = authenticate(username=user_obj.username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                return redirect("information")
+            else:
+                messages.error(request, 'Username or password is incorrect.')
+                return redirect('LoginPage')
         
-        
-    return render(requests, "login.html")
+        except User.DoesNotExist:
+            messages.error(request, 'Username or password is incorrect.')
+            return redirect('LoginPage')
+    
+    return render(request, "login.html")
 
 def LogoutPage(requests):
     logout(requests)

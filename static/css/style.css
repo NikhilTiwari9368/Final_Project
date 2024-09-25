@@ -6,8 +6,24 @@
     --dark: #1D2A4D;
 }
 
+/* General reset for box-sizing */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Body styles for better mobile readability */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif; /* Use a more common font for compatibility */
+}
+
+/* Button styles */
 .btn {
     font-weight: 700;
+    padding: 10px 15px; /* Add padding for better touch targets */
     transition: .5s;
 }
 
@@ -53,6 +69,7 @@
     z-index: 99;
 }
 
+/* Navbar styles */
 .navbar-light .navbar-nav .nav-link {
     font-family: 'Jost', sans-serif;
     position: relative;
@@ -70,7 +87,7 @@
     color: var(--primary);
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
     .navbar-light .navbar-nav .nav-link::before {
         position: absolute;
         content: "";
@@ -89,22 +106,17 @@
     }
 }
 
-@media (max-width: 991.98px) {
-    .navbar-light .navbar-nav .nav-link  {
-        margin-left: 0;
-        padding: 10px 0;
-    }
-}
-
+/* Hero header styles */
 .hero-header {
-    background: url(../img/hero.jpg) top right no-repeat;
-    background-size: cover;
+    background: url(../img/hero.jpg) center center / cover no-repeat;
+    height: 200px; /* Set a specific height for mobile */
 }
 
+/* Service item styles */
 .service-item {
     position: relative;
-    height: 350px;
-    padding: 0 30px;
+    height: auto; /* Allow height to adjust based on content */
+    padding: 20px; /* Add padding for touch targets */
     transition: .5s;
 }
 
@@ -137,6 +149,7 @@
     opacity: 1;
 }
 
+/* Price carousel styles */
 .price-carousel::after {
     position: absolute;
     content: "";
@@ -158,7 +171,7 @@
 }
 
 .price-carousel .owl-nav .owl-prev,
-.price-carousel .owl-nav .owl-next{
+.price-carousel .owl-nav .owl-next {
     position: relative;
     margin: 0 5px;
     width: 45px;
@@ -178,12 +191,14 @@
     color: var(--dark);
 }
 
+/* Team item styles */
 @media (min-width: 576px) {
     .team-item .row {
         height: 350px;
     }
 }
 
+/* Team carousel navigation styles */
 .team-carousel .owl-nav {
     position: absolute;
     padding: 0 45px;
@@ -215,6 +230,7 @@
     background: var(--dark);
 }
 
+/* Testimonial carousel styles */
 .testimonial-carousel .owl-dots {
     margin-top: 15px;
     display: flex;
@@ -243,4 +259,31 @@
 .testimonial-carousel .owl-item img {
     width: 150px;
     height: 150px;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .navbar-light .navbar-nav .nav-link {
+        margin-left: 0; /* Reset margin for mobile */
+        padding: 10px 0; /* Adjust padding */
+        font-size: 16px; /* Adjust font size for readability */
+    }
+
+    .service-item {
+        padding: 10px; /* Reduce padding on mobile */
+    }
+
+    .price-carousel .owl-nav .owl-prev,
+    .price-carousel .owl-nav .owl-next {
+        width: 35px; /* Adjust button size for mobile */
+        height: 35px; /* Adjust button size for mobile */
+    }
+
+    h2 {
+        font-size: 24px; /* Responsive font size */
+    }
+
+    h3 {
+        font-size: 20px; /* Responsive font size */
+    }
 }
