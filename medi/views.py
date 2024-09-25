@@ -13,6 +13,7 @@ from Precaution.models import Disease
 from django.contrib import messages
 from django.contrib.auth.models import User
 
+
 def disease_info(request):
     # Initialize the disease variable
     disease = None
@@ -33,21 +34,42 @@ def disease_info(request):
 def information(requests):
     return render(requests, "information.html")
 
-def healthcare_centre(requests):
-    if requests.method == 'POST':
-        name = requests.POST.get('name')
-        email = requests.POST.get('email')
-        password1 = requests.POST.get('password1')
-        password2 = requests.POST.get('password2')
-        
+def healthcare_centre(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        # Check if the email already exists
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists. Please log in.")
+            return render(request, 'signup.html')  # Replace with your signup template
+
+        # Continue with your existing password checks here
         if password1 != password2:
-            return HttpResponse("Your password and conform password are not same ")
-        else:
-            my_user = User.objects.create_user(name , email , password1)
-            my_user.save()
-            return redirect("LoginPage")
-    
-    return render(requests, "signup.html")
+            messages.error(request, "Passwords do not match.")
+            return render(request, 'signup.html')  # Replace with your signup template
+
+        if len(password1) < 8:
+            messages.error(request, "Password must contain at least 8 characters.")
+            return render(request, 'signup.html')  # Replace with your signup template
+
+        if password1.isnumeric():
+            messages.error(request, "Password cannot be entirely numeric.")
+            return render(request, 'signup.html')  # Replace with your signup template
+
+        if name.lower() in password1.lower() or email.split('@')[0].lower() in password1.lower():
+            messages.error(request, "Password is too similar to your personal information.")
+            return render(request, 'signup.html')  # Replace with your signup template
+
+        # If everything is valid, create the user
+        user = User.objects.create_user(username=name, email=email, password=password1)
+        user.save()
+        messages.success(request, "Account created successfully. You can log in now.")
+        return redirect('LoginPage')  # Redirect to login page or another page
+
+    return render(request, 'signup.html')
         
 
 def LoginPage(request):
