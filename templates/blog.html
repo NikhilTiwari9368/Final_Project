@@ -3,34 +3,37 @@
 <!-- Blog Start -->
 <div class="container-fluid py-5">
     <div class="container">
-        <div class="text-center mx-auto mb-5" style="max-width: 500px;">
-            <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Blog Post</h5>
-            <h1 class="display-4">Our Latest Herbal Healthcare Blog Posts</h1>
+        <div class="text-center mx-auto mb-4" style="max-width: 500px;">
+            <h6 class="d-inline-block text-primary text-uppercase border-bottom border-3">Latest Updates</h6>
+            <h2 class="fw-semibold">Discover the Power of Ayurveda for a Healthier Life</h2>
         </div>
         <div class="row">
             {% for post in blog_posts %}
             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="bg-light rounded overflow-hidden" style="height: 350px;"> <!-- Fixed height for consistent background -->
-                    <div class="p-4" style="flex-grow: 1;"> <!-- Allow the content to grow -->
-                        <a class="h3 d-block mb-3" href="">{{ post.title }}</a>
-                        <p class="m-0">{{ post.content }}</p>
+                <div class="bg-light rounded overflow-hidden d-flex flex-column" style="height: auto;">
+                    <div class="p-3">
+                        <a class="h5 d-block mb-1 text-dark text-truncate" href="">{{ post.title }}</a> <!-- Reduced margin -->
+                        <p class="small m-0 text-truncate short-content" style="max-height: 40px; overflow: hidden;">
+                            {{ post.content }}
+                        </p>
+                        <p class="small m-0 full-content d-none">
+                            {{ post.content }}
+                        </p>
+                        <a href="javascript:void(0);" class="text-primary read-more">Read More</a>
                     </div>
                     {% if post.image %}
-                    <div class="blog-image" style="height: 150px; overflow: hidden;"> <!-- Smaller fixed height for the image -->
-                        <img class="img-fluid" src="{{ post.image.url }}" style="width: 100%; height: 100%; object-fit: cover;" alt="">
+                    <div class="blog-image" style="height: 160px; overflow: hidden; display: flex; align-items: center; margin-top: 5px;">
+                        <img class="img-fluid w-100" src="{{ post.image.url }}" style="object-fit: cover; height: 100%;" alt="">
                     </div>
                     {% endif %}
                     {% if post.video %}
-                    <div class="mt-3" style="height: 150px; overflow: hidden;"> <!-- Smaller fixed height for the video -->
+                    <div class="mt-2" style="height: 160px; overflow: hidden; display: flex; align-items: center; margin-top: 5px;">
                         <video controls class="w-100" style="height: 100%; object-fit: cover;">
                             <source src="{{ post.video.url }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </div>
                     {% endif %}
-                    <div class="d-flex justify-content-between border-top p-4">
-                        <!-- Additional details can be added here if needed -->
-                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -41,3 +44,24 @@
 <!-- Blog End -->
 
 {% include "footer.html" %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".read-more").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                let shortContent = this.previousElementSibling.previousElementSibling;
+                let fullContent = this.previousElementSibling;
+
+                if (fullContent.classList.contains("d-none")) {
+                    fullContent.classList.remove("d-none");
+                    shortContent.classList.add("d-none");
+                    this.textContent = "Read Less";
+                } else {
+                    fullContent.classList.add("d-none");
+                    shortContent.classList.remove("d-none");
+                    this.textContent = "Read More";
+                }
+            });
+        });
+    });
+</script>

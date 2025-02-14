@@ -1,24 +1,25 @@
 {% include "header.html" %}
 <!-- Search Start -->
 
-<div class="container-fluid bg-primary my-5 py-5">
+<!-- Search Start -->
+<div class="container-fluid bg-success my-5 py-5">
     <div class="container py-5">
         <div class="text-center mx-auto mb-5" style="max-width: 500px;">
             <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Find A Herbal Expert</h5>
-            <h1 class="display-4 mb-4">Discover Trusted Herbal Healthcare Professionals</h1>
+            <h1 class="display-4 mb-4 text-white">Discover Trusted Herbal Healthcare Professionals</h1>
             <h5 class="text-white fw-normal">Embrace the healing power of nature with our curated list of experienced herbal healthcare practitioners. Whether you seek traditional remedies or modern herbal treatments, find the right expert to guide your wellness journey.</h5>
         </div>
         <div class="mx-auto" style="width: 100%; max-width: 600px;">
-            <form method="POST" action="{% url "doctorsearch" %}">
+            <form method="POST" action="{% url 'doctorsearch' %}">
                 {% csrf_token %}
                 <div class="input-group">
-                    <select name="speciality" class="form-select border-primary w-25" style="height: 60px;">
+                    <select name="speciality" class="form-select border-success w-25" style="height: 60px;">
                         <option selected>Select Speciality</option>
                         <option value="Ayurveda">Ayurveda</option>
                         <option value="Herbal Medicine">Herbal Medicine</option>
                         <option value="Naturopathy">Naturopathy</option>
                     </select>
-                    <input type="text" name="city" class="form-control border-primary" placeholder="Search by City" style="width: 25%;">
+                    <input type="text" name="city" class="form-control border-success" placeholder="Search by City" style="width: 25%;">
                     <button class="btn btn-dark border-0" style="width: 25%;">Search</button>
                 </div>
             </form>
@@ -31,7 +32,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">{{ doctor.name }}</h5>
-                            <p class="card-text">Speciality: {{ doctor.speciality }}</p>
+                            <p class="card-text">Specialty: {{ doctor.speciality }}</p>
                             <p class="card-text">City: {{ doctor.city }}</p>
                             <p class="card-text">Contact: {{ doctor.contact_info }}</p>
                         </div>
@@ -44,6 +45,7 @@
         </div>
     </div>
 </div>
+<!-- Search End -->
 
 
 {% include "footer.html" %}

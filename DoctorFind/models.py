@@ -1,4 +1,3 @@
-
 from django.db import models
 
 class Doctor(models.Model):
@@ -6,6 +5,17 @@ class Doctor(models.Model):
         ('Ayurveda', 'Ayurveda'),
         ('Herbal Medicine', 'Herbal Medicine'),
         ('Naturopathy', 'Naturopathy'),
+        ('Homeopathy', 'Homeopathy'),
+        ('Cardiology', 'Cardiology'),
+        ('Dermatology', 'Dermatology'),
+        ('Neurology', 'Neurology'),
+        ('Pediatrics', 'Pediatrics'),
+        ('Psychiatry', 'Psychiatry'),
+        ('Radiology', 'Radiology'),
+        ('Surgery', 'Surgery'),
+        ('Orthopedics', 'Orthopedics'),
+        ('Ophthalmology', 'Ophthalmology'),
+        ('Oncology', 'Oncology'),
     ]
 
     name = models.CharField(max_length=100)
