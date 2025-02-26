@@ -143,5 +143,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587    
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nodecode057@gmail.com'
-EMAIL_HOST_PASSWORD = 'qqhh ejmc qdty tgoj'
+EMAIL_HOST_PASSWORD = 'lpis kmzn hxga ggcs'
 DEFAULT_FROM_EMAIL = 'dixit.healthcare@gmail.com'
