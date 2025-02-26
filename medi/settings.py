@@ -145,3 +145,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nodecode057@gmail.com'
 EMAIL_HOST_PASSWORD = 'lpis kmzn hxga ggcs'
 DEFAULT_FROM_EMAIL = 'dixit.healthcare@gmail.com'
+
+ALLOWED_HOSTS = ["dixithealthcare.onrender.com", "localhost", "127.0.0.1"]
+
+
