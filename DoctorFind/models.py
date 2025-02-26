@@ -38,7 +38,7 @@ class Doctor(models.Model):
     ('Physiotherapy', 'Physiotherapy'),
     ('Acupuncture', 'Acupuncture'),
     ('Unani Medicine', 'Unani Medicine'),
-    ('Siddha Medicine', 'Siddha Medicine'),
+    ('Siddha Medicine', 'Siddha Medicine'), 
     ('Yoga Therapy', 'Yoga Therapy'),
     ]
 
