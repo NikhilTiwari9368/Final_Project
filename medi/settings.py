@@ -124,8 +124,6 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATIC_ROOT = BASE_DIR / "Doctor_Final_Project"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -148,6 +146,6 @@ EMAIL_HOST_USER = 'nodecode057@gmail.com'
 EMAIL_HOST_PASSWORD = 'lpis kmzn hxga ggcs'
 DEFAULT_FROM_EMAIL = 'dixit.healthcare@gmail.com'
 
-ALLOWED_HOSTS = ["dixithealthcare.onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["healtcare-doctor.onrender.com", "localhost", "127.0.0.1"]
 
 
