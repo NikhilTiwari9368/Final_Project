@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-8_ez0h9x(1c=%t&gg6j6y5t$6h6&24s!bamk$i)ty6c!+was(4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['dixit-healthcare.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
