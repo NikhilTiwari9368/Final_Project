@@ -1,0 +1,126 @@
+/* Google Font Link */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #13C5DD; /* Background color for the entire page */
+}
+
+.container {
+  max-width: 350px; /* Reduced box size */
+  width: 100%;
+  background: #fff; /* White background for the form box */
+  padding: 20px; /* Reduced padding inside the box */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Shadow for the box */
+  border-radius: 10px; /* Rounded corners */
+  display: flex; /* Use flexbox for the form content */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 20px; /* Space below title */
+  text-align: center; /* Center the title */
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  margin: 10px 0;
+  position: relative;
+}
+
+.input-box input {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 0 30px; /* Padding inside the input */
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  transition: border-color 0.3s ease;
+}
+
+.input-box input:focus,
+.input-box input:valid {
+  border-color: #725bd8; /* Color when focused */
+}
+
+.input-box i {
+  position: absolute;
+  color: #725bd8; /* Icon color */
+  font-size: 17px;
+  left: 10px; /* Adjusted for better positioning */
+}
+
+.button {
+  margin-top: 20px; /* Space above button */
+  width: 100%; /* Full width for button */
+}
+
+.button input {
+  color: #fff;
+  background: #725bd8; /* Button color */
+  border-radius: 6px; /* Rounded corners */
+  padding: 10px; /* Padding inside the button */
+  cursor: pointer;
+  transition: background 0.4s ease;
+}
+
+.button input:hover {
+  background: #5a4b9a; /* Darker hover effect */
+}
+
+.text {
+  font-size: 14px;
+  color: #333;
+  text-align: center; /* Centered text */
+  margin-top: 10px; /* Space above text */
+}
+
+.text a {
+  text-decoration: none;
+  color: #725bd8; /* Link color */
+}
+
+.text a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+.home-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.home-button a {
+  color: #725bd8; /* Link color */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.home-button a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+@media (max-width: 500px) {
+  .container {
+    padding: 15px; /* Reduced padding on mobile */
+    max-width: 300px; /* Further reduced box size on mobile */
+  }
+}
