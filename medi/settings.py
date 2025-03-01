@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['dixit-healthcare.onrender.com', 'localhost', '127.0.0.1']
 
+PORT = os.getenv("PORT", "8000")
 
 # Application definition
 
