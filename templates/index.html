@@ -1,16 +1,80 @@
 {% include "header.html" %}
     <!-- Hero Start -->
 
-    <div class="container-fluid bg-primary py-5 mb-5 hero-header" style="background-image: url('/static/img/main.png'); background-size: cover; background-position: center; min-height: 100vh;">
-        <div class="container py-5">
+    <div class="container-fluid hero-header">
+        <div class="container content-container">
             <div class="row justify-content-start">
                 <div class="col-lg-8 text-center text-lg-start">
-                    <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5" style="border-color: rgba(255, 255, 255, .3) !important;"></h5>
+                    <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5"
+                        style="border-color: rgba(255, 255, 255, .3) !important;">
+                    </h5>
                     <h1 class="display-1 text-black mb-md-4"></h1>
                 </div>
             </div>
         </div>
     </div>
+    
+    <style>
+    /* Default background settings */
+    .hero-header {
+        background: url('/static/img/main.png') no-repeat center center;
+        background-size: cover;
+        min-height: 100vh;
+        width: 100%;
+        padding: 5% 0; /* Adjust padding dynamically */
+        display: flex;
+        align-items: center; /* Center content vertically */
+        justify-content: center;
+    }
+    
+    /* Content container ensures text is positioned correctly */
+    .content-container {
+        width: 100%;
+        max-width: 1200px; /* Ensures it doesn’t stretch too wide on large screens */
+        padding: 20px;
+    }
+    
+    /* Large screens (desktops) */
+    @media (min-width: 1200px) {
+        .hero-header {
+            min-height: 90vh;
+        }
+    }
+    
+    /* Medium screens (tablets) */
+    @media (max-width: 992px) {
+        .hero-header {
+            min-height: 75vh;
+            background-size: cover;
+            padding: 3% 0;
+        }
+    }
+    
+    /* Small screens (mobile) */
+    @media (max-width: 768px) {
+        .hero-header {
+            min-height: 65vh;
+            background-size: contain; /* Prevents cropping */
+            background-position: center;
+            padding: 2% 0;
+        }
+    }
+    
+    /* Extra small screens (phones) */
+    @media (max-width: 480px) {
+        .hero-header {
+            min-height: 60vh;
+            background-size: contain;
+            background-position: center;
+            padding: 1% 0;
+        }
+    
+        .content-container {
+            padding: 10px;
+        }
+    }
+    </style>
+    
     
 <!-- Hero End -->
 
