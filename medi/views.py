@@ -113,13 +113,14 @@ def saveform(requests):
         doctor = requests.POST.get('doctor')
         name = requests.POST.get('name')
         email = requests.POST.get('email')
+        mobile_number = requests.POST.get('mobile_number')
         appointment_date = requests.POST.get('appointment_date')
         appointment_time = requests.POST.get('appointment_time')
         
-        ap = Appointment(department = department , doctor = doctor , name = name , email = email , appointment_date = appointment_date , appointment_time = appointment_time)
+        ap = Appointment(department = department , doctor = doctor , name = name , email = email , mobile_number=mobile_number, appointment_date = appointment_date , appointment_time = appointment_time)
         ap.save()
         
-    return render(requests , "information.html")
+    return render(requests , "index.html")
 
 
 def blog(requests):
@@ -152,11 +153,8 @@ def search(requests):
 
 def doctorsearch(request):
     doctors = Doctor.objects.all()
-    speciality = request.POST.get('speciality')
     city = request.POST.get('city')
 
-    if speciality and speciality != "Select Specialty":
-        doctors = doctors.filter(speciality=speciality)
     if city:
         doctors = doctors.filter(city__icontains=city)
 

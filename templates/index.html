@@ -213,6 +213,99 @@
         </div>
     </div>
 </div>
+<!-- Doctors End-->
+<!-- Appointment Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row gx-5">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="mb-4">
+                    <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Appointment</h5>
+                    <h1 class="display-4">Book Your Herbal Healthcare Consultation</h1>
+                </div>
+                <p class="mb-5">Embrace a natural path to wellness with our personalized herbal healthcare services. Our team of experts specializes in holistic treatments, focusing on the body's innate ability to heal through the power of nature. From customized herbal remedies to lifestyle recommendations, we provide comprehensive care that nourishes your body, mind, and spirit. Whether you're looking to boost your immune system, manage stress, or address chronic conditions, our herbal healthcare consultations are tailored to meet your unique needs.</p>
+            </div>
+            <div class="col-lg-6">
+                <div class="bg-light text-center rounded p-5">
+                    <h1 class="mb-4">Book An Appointment</h1>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'saveform' %}">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-12 col-sm-6">
+                                <select id="department" class="form-select bg-white border-0" name="department" style="height: 55px;">
+                                    <option selected>Choose Department</option>
+                                    <option value="Herbal Medicine">Herbal Medicine</option>
+                                    <option value="Ayurvedic Consultation">Ayurvedic Consultation</option>
+                                    <option value="Specialist in Womens Diseases">Specialist in Womens Diseases</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <select id="doctor" class="form-select bg-white border-0" name="doctor" style="height: 55px;">
+                                    <option selected>Select Doctor</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="text" class="form-control bg-white border-0" placeholder="Your Name" name="name" style="height: 55px;" required>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="email" class="form-control bg-white border-0" placeholder="Your Email" name="email" style="height: 55px;" required>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="text" class="form-control bg-white border-0" placeholder="Your Mobile Number" name="mobile_number" style="height: 55px;" required>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="date" class="form-control bg-white border-0" name="appointment_date" style="height: 55px;" required>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="time" class="form-control bg-white border-0" name="appointment_time" style="height: 55px;" required>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary w-100 py-3" type="submit">Make An Appointment</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Appointment End -->
+
+<!-- JavaScript to dynamically update the Doctor field based on Department selection -->
+<script>
+document.getElementById('department').addEventListener('change', function() {
+    var department = this.value;
+    var doctorSelect = document.getElementById('doctor');
+    doctorSelect.innerHTML = '';  
+
+    var doctors = {
+        'Herbal Medicine': ['Dr. Vijay Shyam Dixit '],
+        'Ayurvedic Consultation': ['Dr. Vijay Shyam Dixit ', 'Dr. Pooja Dixit'],
+        'Specialist in Womens Diseases': ['Dr. Pooja Dixit'],
+    };
+
+    if (department in doctors) {
+        doctors[department].forEach(function(doctor) {
+            var option = document.createElement('option');
+            option.value = doctor;
+            option.textContent = doctor;
+            doctorSelect.appendChild(option);
+        });
+    } else {
+        var defaultOption = document.createElement('option');
+        defaultOption.value = "";
+        defaultOption.textContent = "Select Doctor";
+        doctorSelect.appendChild(defaultOption);
+    }
+});
+</script>
 
 
 
@@ -316,51 +409,8 @@
             <form method="POST" action="{% url 'doctorsearch' %}">
                 {% csrf_token %}
                 <div class="input-group">
-                    <select name="speciality" class="form-select" style="height: 60px; border-color: #09143C;">
-                        <option selected>Select Speciality</option>
-
-                        <!-- Ayurveda Specialties -->
-                        <option value="Ayurveda - General">Ayurveda - General</option>
-                        <option value="Panchakarma Therapy">Panchakarma Therapy</option>
-                        <option value="Marma Therapy">Marma Therapy</option>
-                        <option value="Kshar Sutra Therapy">Kshar Sutra Therapy</option>
-                        <option value="Leech Therapy">Leech Therapy</option>
-                        <option value="Herbal Medicine">Herbal Medicine</option>
-                        <option value="Naturopathy">Naturopathy</option>
-                        <option value="Homeopathy">Homeopathy</option>
-
-                        <!-- Male-Specific Specialties -->
-                        <option value="Andrology (Men’s Health)">Andrology (Men’s Health)</option>
-                        <option value="Ayurvedic Urology">Ayurvedic Urology</option>
-
-                        <!-- Female-Specific Specialties -->
-                        <option value="Gynecology & Obstetrics">Gynecology & Obstetrics</option>
-                        <option value="PCOS & Hormonal Disorders">PCOS & Hormonal Disorders</option>
-                        <option value="Pregnancy & Postpartum Care">Pregnancy & Postpartum Care</option>
-
-                        <!-- Modern Medical Specialties -->
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Dermatology">Dermatology</option>
-                        <option value="Neurology">Neurology</option>
-                        <option value="Pediatrics">Pediatrics</option>
-                        <option value="Psychiatry">Psychiatry</option>
-                        <option value="Radiology">Radiology</option>
-                        <option value="Surgery">Surgery</option>
-                        <option value="Orthopedics">Orthopedics</option>
-                        <option value="Ophthalmology">Ophthalmology</option>
-                        <option value="Oncology">Oncology</option>
-
-                        <!-- Alternative Medicine Specialties -->
-                        <option value="Chiropractic Medicine">Chiropractic Medicine</option>
-                        <option value="Physiotherapy">Physiotherapy</option>
-                        <option value="Acupuncture">Acupuncture</option>
-                        <option value="Unani Medicine">Unani Medicine</option>
-                        <option value="Siddha Medicine">Siddha Medicine</option>
-                        <option value="Yoga Therapy">Yoga Therapy</option>
-                    </select>
-
-                    <input type="text" name="city" class="form-control" placeholder="Search by City" style="width: 25%; border-color: #09143C;">
-                    <button class="btn" style="width: 25%; background-color: #09143C; color: white; border: none;">Search</button>
+                    <input type="text" name="city" class="form-control" placeholder="Search by City" style="border-color: #09143C; height: 60px;">
+                    <button class="btn" style="background-color: #09143C; color: white; border: none; width: 25%;">Search</button>
                 </div>
             </form>
         </div>
@@ -370,13 +420,26 @@
                 {% for doctor in doctors %}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ doctor.name }}</h5>
-                            <p class="card-text">Specialty: {{ doctor.speciality }}</p>
-                            <p class="card-text">City: {{ doctor.city }}</p>
-                            <p class="card-text">Contact: {{ doctor.contact_info }}</p>
+                        <div class="row g-0">
+                            <!-- Image on the Left -->
+                            <div class="col-md-4">
+                                {% if doctor.image %}
+                                <img src="{{ doctor.image.url }}" class="img-fluid rounded-start" alt="{{ doctor.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                {% else %}
+                                <img src="/media/doctor_images/default.jpg" class="img-fluid rounded-start" alt="No Image Available" style="width: 100%; height: 100%; object-fit: cover;">
+                                {% endif %}
+                            </div>
+                            <!-- Content on the Right -->
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ doctor.name }}</h5>
+                                    <p class="card-text"><strong>Specialty:</strong> {{ doctor.speciality }}</p>
+                                    <p class="card-text"><strong>City:</strong> {{ doctor.city }}</p>
+                                    <p class="card-text"><strong>Contact:</strong> {{ doctor.contact_info }}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </div>  
                 </div>
                 {% empty %}
                 <p class="text-white text-center">No doctors found matching your criteria.</p>
@@ -385,8 +448,8 @@
         </div>
     </div>
 </div>
-
 <!-- Search End -->
+
 
 
 {% comment %} "container-fluid py-5" {% endcomment %}

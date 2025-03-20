@@ -8,11 +8,18 @@
                     <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Appointment</h5>
                     <h1 class="display-4">Book Your Herbal Healthcare Consultation</h1>
                 </div>
-                <p class="mb-5">Embrace a natural path to wellness with our personalized herbal healthcare services. Our team of experts specializes in holistic treatments, focusing on the body's innate ability to heal through the power of nature. From customized herbal remedies to lifestyle recommendations, we provide comprehensive care that nourishes your body, mind, and spirit. Whether you're looking to boost your immune system, manage stress, or address chronic conditions, our herbal healthcare consultations are tailored to meet your unique needs.</p>
+                <p class="mb-5">Embrace a natural path to wellness with our personalized herbal healthcare services...</p>
             </div>
             <div class="col-lg-6">
                 <div class="bg-light text-center rounded p-5">
                     <h1 class="mb-4">Book An Appointment</h1>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
                     <form method="POST" action="{% url 'saveform' %}">
                         {% csrf_token %}
                         <div class="row g-3">
@@ -21,26 +28,28 @@
                                     <option selected>Choose Department</option>
                                     <option value="Herbal Medicine">Herbal Medicine</option>
                                     <option value="Ayurvedic Consultation">Ayurvedic Consultation</option>
-                                    <option value="Holistic Therapies">Holistic Therapies</option>
+                                    <option value="Specialist in Womens Diseases">Specialist in Womens Diseases</option>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <select id="doctor" class="form-select bg-white border-0" name="doctor" style="height: 55px;">
                                     <option selected>Select Doctor</option>
-                                    <!-- JavaScript will dynamically populate this -->
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control bg-white border-0" placeholder="Your Name" name="name" style="height: 55px;">
+                                <input type="text" class="form-control bg-white border-0" placeholder="Your Name" name="name" style="height: 55px;" required>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <input type="email" class="form-control bg-white border-0" placeholder="Your Email" name="email" style="height: 55px;">
+                                <input type="email" class="form-control bg-white border-0" placeholder="Your Email" name="email" style="height: 55px;" required>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <input type="date" class="form-control bg-white border-0" placeholder="Date" name="appointment_date" style="height: 55px;" required>
+                                <input type="text" class="form-control bg-white border-0" placeholder="Your Mobile Number" name="mobile_number" style="height: 55px;" required>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <input type="time" class="form-control bg-white border-0" placeholder="Time" name="appointment_time" style="height: 55px;" required>
+                                <input type="date" class="form-control bg-white border-0" name="appointment_date" style="height: 55px;" required>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="time" class="form-control bg-white border-0" name="appointment_time" style="height: 55px;" required>
                             </div>
                             <div class="col-12">
                                 <button class="btn btn-primary w-100 py-3" type="submit">Make An Appointment</button>
@@ -59,12 +68,12 @@
 document.getElementById('department').addEventListener('change', function() {
     var department = this.value;
     var doctorSelect = document.getElementById('doctor');
-    doctorSelect.innerHTML = '';  // Clear existing options
+    doctorSelect.innerHTML = '';  
 
     var doctors = {
-        'Herbal Medicine': ['Dr. A. Sharma', 'Dr. D. Singh'],
-        'Ayurvedic Consultation': ['Dr. B. Mehta', 'Dr. E. Verma'],
-        'Holistic Therapies': ['Dr. C. Patel', 'Dr. F. Gupta']
+        'Herbal Medicine': ['Dr. Vijay Shyam Dixit '],
+        'Ayurvedic Consultation': ['Dr. Vijay Shyam Dixit ', 'Dr. Pooja Dixit'],
+        'Specialist in Womens Diseases':['Dr. Pooja Dixit'],
     };
 
     if (department in doctors) {

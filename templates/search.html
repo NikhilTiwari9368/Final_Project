@@ -2,62 +2,19 @@
 <!-- Search Start -->
 
 <!-- Search Start -->
-<div class="container-fluid bg-success my-5 py-5">
+<div class="container-fluid" style="background-color: #09143C; margin-top: 5rem; padding-top: 5rem; padding-bottom: 5rem;">
     <div class="container py-5">
         <div class="text-center mx-auto mb-5" style="max-width: 500px;">
             <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Find A Herbal Expert</h5>
-            <h1 class="display-4 mb-4 text-white">Discover Trusted Herbal Healthcare Professionals</h1>
+            <h3 class="display-8 mb-4 text-white">Discover Trusted Herbal Healthcare Professionals</h3>
             <h5 class="text-white fw-normal">Embrace the healing power of nature with our curated list of experienced herbal healthcare practitioners. Whether you seek traditional remedies or modern herbal treatments, find the right expert to guide your wellness journey.</h5>
         </div>
         <div class="mx-auto" style="width: 100%; max-width: 600px;">
             <form method="POST" action="{% url 'doctorsearch' %}">
                 {% csrf_token %}
                 <div class="input-group">
-                    <select name="speciality" class="form-select border-success w-25" style="height: 60px;">
-                        <option selected>Select Speciality</option>
-                    
-                        <!-- Ayurveda Specialties -->
-                        <option value="Ayurveda - General">Ayurveda - General</option>
-                        <option value="Panchakarma Therapy">Panchakarma Therapy</option>
-                        <option value="Marma Therapy">Marma Therapy</option>
-                        <option value="Kshar Sutra Therapy">Kshar Sutra Therapy</option>
-                        <option value="Leech Therapy">Leech Therapy</option>
-                        <option value="Herbal Medicine">Herbal Medicine</option>
-                        <option value="Naturopathy">Naturopathy</option>
-                        <option value="Homeopathy">Homeopathy</option>
-                    
-                        <!-- Male-Specific Specialties -->
-                        <option value="Andrology (Men’s Health)">Andrology (Men’s Health)</option>
-                        <option value="Ayurvedic Urology">Ayurvedic Urology</option>
-                    
-                        <!-- Female-Specific Specialties -->
-                        <option value="Gynecology & Obstetrics">Gynecology & Obstetrics</option>
-                        <option value="PCOS & Hormonal Disorders">PCOS & Hormonal Disorders</option>
-                        <option value="Pregnancy & Postpartum Care">Pregnancy & Postpartum Care</option>
-                    
-                        <!-- Modern Medical Specialties -->
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Dermatology">Dermatology</option>
-                        <option value="Neurology">Neurology</option>
-                        <option value="Pediatrics">Pediatrics</option>
-                        <option value="Psychiatry">Psychiatry</option>
-                        <option value="Radiology">Radiology</option>
-                        <option value="Surgery">Surgery</option>
-                        <option value="Orthopedics">Orthopedics</option>
-                        <option value="Ophthalmology">Ophthalmology</option>
-                        <option value="Oncology">Oncology</option>
-                    
-                        <!-- Alternative Medicine Specialties -->
-                        <option value="Chiropractic Medicine">Chiropractic Medicine</option>
-                        <option value="Physiotherapy">Physiotherapy</option>
-                        <option value="Acupuncture">Acupuncture</option>
-                        <option value="Unani Medicine">Unani Medicine</option>
-                        <option value="Siddha Medicine">Siddha Medicine</option>
-                        <option value="Yoga Therapy">Yoga Therapy</option>
-                    </select>
-                    
-                    <input type="text" name="city" class="form-control border-success" placeholder="Search by City" style="width: 25%;">
-                    <button class="btn btn-dark border-0" style="width: 25%;">Search</button>
+                    <input type="text" name="city" class="form-control" placeholder="Search by City" style="border-color: #09143C; height: 60px;">
+                    <button class="btn" style="background-color: #09143C; color: white; border: none; width: 25%;">Search</button>
                 </div>
             </form>
         </div>
@@ -67,11 +24,24 @@
                 {% for doctor in doctors %}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ doctor.name }}</h5>
-                            <p class="card-text">Specialty: {{ doctor.speciality }}</p>
-                            <p class="card-text">City: {{ doctor.city }}</p>
-                            <p class="card-text">Contact: {{ doctor.contact_info }}</p>
+                        <div class="row g-0">
+                            <!-- Image on the Left -->
+                            <div class="col-md-4">
+                                {% if doctor.image %}
+                                <img src="{{ doctor.image.url }}" class="img-fluid rounded-start" alt="{{ doctor.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                {% else %}
+                                <img src="/media/doctor_images/default.jpg" class="img-fluid rounded-start" alt="No Image Available" style="width: 100%; height: 100%; object-fit: cover;">
+                                {% endif %}
+                            </div>
+                            <!-- Content on the Right -->
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ doctor.name }}</h5>
+                                    <p class="card-text"><strong>Specialty:</strong> {{ doctor.speciality }}</p>
+                                    <p class="card-text"><strong>City:</strong> {{ doctor.city }}</p>
+                                    <p class="card-text"><strong>Contact:</strong> {{ doctor.contact_info }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -83,6 +53,5 @@
     </div>
 </div>
 <!-- Search End -->
-
 
 {% include "footer.html" %}
