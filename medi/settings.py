@@ -86,11 +86,11 @@ WSGI_APPLICATION = "medi.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'myproject_db',
+        'NAME': 'railway',
         'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'PASSWORD': 'ZpDIlIVGIaLGYBDgjWdIwQqIUQXGkQri',
+        'HOST': 'crossover.proxy.rlwy.net',
+        'PORT': '27322',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
