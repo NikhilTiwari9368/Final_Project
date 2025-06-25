@@ -214,6 +214,7 @@
     </div>
 </div>
 <!-- Doctors End-->
+
 <!-- Appointment Start -->
 <div class="container-fluid py-5">
     <div class="container">
@@ -223,32 +224,28 @@
                     <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Appointment</h5>
                     <h1 class="display-4">Book Your Herbal Healthcare Consultation</h1>
                 </div>
-                <p class="mb-5">Embrace a natural path to wellness with our personalized herbal healthcare services. Our team of experts specializes in holistic treatments, focusing on the body's innate ability to heal through the power of nature. From customized herbal remedies to lifestyle recommendations, we provide comprehensive care that nourishes your body, mind, and spirit. Whether you're looking to boost your immune system, manage stress, or address chronic conditions, our herbal healthcare consultations are tailored to meet your unique needs.</p>
+                <p class="mb-5">Embrace a natural path to wellness with our personalized herbal healthcare services...</p>
             </div>
             <div class="col-lg-6">
                 <div class="bg-light text-center rounded p-5">
                     <h1 class="mb-4">Book An Appointment</h1>
 
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-success">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
+                    <div id="message-box"></div>
 
-                    <form method="POST" action="{% url 'saveform' %}">
+                    <form id="appointment-form">
                         {% csrf_token %}
                         <div class="row g-3">
                             <div class="col-12 col-sm-6">
-                                <select id="department" class="form-select bg-white border-0" name="department" style="height: 55px;">
-                                    <option selected>Choose Department</option>
+                                <select id="department" class="form-select bg-white border-0" name="department" style="height: 55px;" required>
+                                    <option selected disabled>Choose Department</option>
                                     <option value="Herbal Medicine">Herbal Medicine</option>
                                     <option value="Ayurvedic Consultation">Ayurvedic Consultation</option>
                                     <option value="Specialist in Womens Diseases">Specialist in Womens Diseases</option>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <select id="doctor" class="form-select bg-white border-0" name="doctor" style="height: 55px;">
-                                    <option selected>Select Doctor</option>
+                                <select id="doctor" class="form-select bg-white border-0" name="doctor" style="height: 55px;" required>
+                                    <option selected disabled>Select Doctor</option>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6">
@@ -271,6 +268,7 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -278,21 +276,22 @@
 </div>
 <!-- Appointment End -->
 
-<!-- JavaScript to dynamically update the Doctor field based on Department selection -->
+<!-- JavaScript Section -->
 <script>
-document.getElementById('department').addEventListener('change', function() {
+// Dynamically populate doctor dropdown based on department
+document.getElementById('department').addEventListener('change', function () {
     var department = this.value;
     var doctorSelect = document.getElementById('doctor');
-    doctorSelect.innerHTML = '';  
+    doctorSelect.innerHTML = ''; // clear previous
 
     var doctors = {
-        'Herbal Medicine': ['Dr. Vijay Shyam Dixit '],
-        'Ayurvedic Consultation': ['Dr. Vijay Shyam Dixit ', 'Dr. Pooja Dixit'],
+        'Herbal Medicine': ['Dr. Vijay Shyam Dixit'],
+        'Ayurvedic Consultation': ['Dr. Vijay Shyam Dixit', 'Dr. Pooja Dixit'],
         'Specialist in Womens Diseases': ['Dr. Pooja Dixit'],
     };
 
     if (department in doctors) {
-        doctors[department].forEach(function(doctor) {
+        doctors[department].forEach(function (doctor) {
             var option = document.createElement('option');
             option.value = doctor;
             option.textContent = doctor;
@@ -305,8 +304,59 @@ document.getElementById('department').addEventListener('change', function() {
         doctorSelect.appendChild(defaultOption);
     }
 });
-</script>
 
+// Helper to get CSRF token from cookie
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+// Submit form to API with CSRF token
+document.getElementById('appointment-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    fetch('/api/appointments/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => {
+        if (!res.ok) {
+            return res.json().then(err => { throw err; });
+        }
+        return res.json();
+    })
+    .then(response => {
+        document.getElementById('message-box').innerHTML =
+            `<div class="alert alert-success">✅ Appointment booked successfully!</div>`;
+        form.reset();
+        document.getElementById('doctor').innerHTML = '<option selected disabled>Select Doctor</option>';
+    })
+    .catch(error => {
+        console.error("❌ API Error:", error);
+        document.getElementById('message-box').innerHTML =
+            `<div class="alert alert-danger">❌ Error: ${error?.detail || 'Something went wrong!'}</div>`;
+    });
+});
+</script>
 
 
 <!-- Services Start -->
@@ -396,7 +446,6 @@ document.getElementById('department').addEventListener('change', function() {
 
 <!-- About End -->
 
-
 <!-- Search Start -->
 <div class="container-fluid" style="background-color: #09143C; margin-top: 5rem; padding-top: 5rem; padding-bottom: 5rem;">
     <div class="container py-5">
@@ -405,51 +454,70 @@ document.getElementById('department').addEventListener('change', function() {
             <h3 class="display-8 mb-4 text-white">Discover Trusted Herbal Healthcare Professionals</h3>
             <h5 class="text-white fw-normal">Embrace the healing power of nature with our curated list of experienced herbal healthcare practitioners. Whether you seek traditional remedies or modern herbal treatments, find the right expert to guide your wellness journey.</h5>
         </div>
+
+        <!-- API-based Search -->
         <div class="mx-auto" style="width: 100%; max-width: 600px;">
-            <form method="POST" action="{% url 'doctorsearch' %}">
-                {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" name="city" class="form-control" placeholder="Search by City" style="border-color: #09143C; height: 60px;">
-                    <button class="btn" style="background-color: #09143C; color: white; border: none; width: 25%;">Search</button>
-                </div>
-            </form>
+            <div class="input-group">
+                <input id="cityInput" type="text" class="form-control" placeholder="Search by City" style="border-color: #09143C; height: 60px;">
+                <button id="searchBtn" class="btn" style="background-color: #09143C; color: white; border: none; width: 25%;">Search</button>
+            </div>
         </div>
+
+        <!-- Results -->
         <div class="mt-5">
             <h3 class="text-center text-white">Search Results</h3>
-            <div class="row">
-                {% for doctor in doctors %}
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card">
-                        <div class="row g-0">
-                            <!-- Image on the Left -->
-                            <div class="col-md-4">
-                                {% if doctor.image %}
-                                <img src="{{ doctor.image.url }}" class="img-fluid rounded-start" alt="{{ doctor.name }}" style="width: 100%; height: 100%; object-fit: cover;">
-                                {% else %}
-                                <img src="/media/doctor_images/default.jpg" class="img-fluid rounded-start" alt="No Image Available" style="width: 100%; height: 100%; object-fit: cover;">
-                                {% endif %}
-                            </div>
-                            <!-- Content on the Right -->
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ doctor.name }}</h5>
-                                    <p class="card-text"><strong>Specialty:</strong> {{ doctor.speciality }}</p>
-                                    <p class="card-text"><strong>City:</strong> {{ doctor.city }}</p>
-                                    <p class="card-text"><strong>Contact:</strong> {{ doctor.contact_info }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                </div>
-                {% empty %}
-                <p class="text-white text-center">No doctors found matching your criteria.</p>
-                {% endfor %}
+            <div class="row" id="resultsContainer">
+                <!-- JavaScript will inject cards here -->
             </div>
         </div>
     </div>
 </div>
 <!-- Search End -->
 
+<!-- JavaScript -->
+<script>
+    document.getElementById('searchBtn').addEventListener('click', function () {
+        const city = document.getElementById('cityInput').value;
+        const resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.innerHTML = '<p class="text-white text-center">Searching...</p>';
+
+        fetch(`/doctorsearch/api/?city=${encodeURIComponent(city)}`)
+            .then(response => response.json())
+            .then(data => {
+                resultsContainer.innerHTML = '';
+                if (data.length === 0) {
+                    resultsContainer.innerHTML = '<p class="text-white text-center">No doctors found matching your criteria.</p>';
+                    return;
+                }
+
+                data.forEach(doctor => {
+                    const card = `
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="${doctor.image || '/media/doctor_images/default.jpg'}" class="img-fluid rounded-start" alt="${doctor.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${doctor.name}</h5>
+                                        <p class="card-text"><strong>Specialty:</strong> ${doctor.speciality}</p>
+                                        <p class="card-text"><strong>City:</strong> ${doctor.city}</p>
+                                        <p class="card-text"><strong>Contact:</strong> ${doctor.contact_info}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                    resultsContainer.insertAdjacentHTML('beforeend', card);
+                });
+            })
+            .catch(err => {
+                resultsContainer.innerHTML = '<p class="text-white text-center">Error fetching data. Please try again.</p>';
+                console.error(err);
+            });
+    });
+</script>
 
 
 {% comment %} "container-fluid py-5" {% endcomment %}

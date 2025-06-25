@@ -7,61 +7,79 @@
             <h6 class="d-inline-block text-primary text-uppercase border-bottom border-3">Latest Updates</h6>
             <h2 class="fw-semibold">Discover the Power of Ayurveda for a Healthier Life</h2>
         </div>
-        <div class="row">
-            {% for post in blog_posts %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="bg-light rounded overflow-hidden d-flex flex-column" style="height: auto;">
-                    <div class="p-3">
-                        <a class="h5 d-block mb-1 text-dark text-truncate" href="">{{ post.title }}</a> <!-- Reduced margin -->
-                        <p class="small m-0 text-truncate short-content" style="max-height: 40px; overflow: hidden;">
-                            {{ post.content }}
-                        </p>
-                        <p class="small m-0 full-content d-none">
-                            {{ post.content }}
-                        </p>
-                        <a href="javascript:void(0);" class="text-primary read-more">Read More</a>
-                    </div>
-                    {% if post.image %}
-                    <div class="blog-image" style="height: 160px; overflow: hidden; display: flex; align-items: center; margin-top: 5px;">
-                        <img class="img-fluid w-100" src="{{ post.image.url }}" style="object-fit: cover; height: 100%;" alt="">
-                    </div>
-                    {% endif %}
-                    {% if post.video %}
-                    <div class="mt-2" style="height: 160px; overflow: hidden; display: flex; align-items: center; margin-top: 5px;">
-                        <video controls class="w-100" style="height: 100%; object-fit: cover;">
-                            <source src="{{ post.video.url }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
+        <div class="row" id="blog-container">
+            <!-- Blog posts will be injected here -->
         </div>
     </div>
 </div>
-
 <!-- Blog End -->
 
 {% include "footer.html" %}
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".read-more").forEach(function (btn) {
-            btn.addEventListener("click", function () {
-                let shortContent = this.previousElementSibling.previousElementSibling;
-                let fullContent = this.previousElementSibling;
+        fetch("/blog/api")
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById("blog-container");
 
-                if (fullContent.classList.contains("d-none")) {
-                    fullContent.classList.remove("d-none");
-                    shortContent.classList.add("d-none");
-                    this.textContent = "Read Less";
-                } else {
-                    fullContent.classList.add("d-none");
-                    shortContent.classList.remove("d-none");
-                    this.textContent = "Read More";
-                }
+                data.forEach(post => {
+                    const col = document.createElement("div");
+                    col.className = "col-lg-4 col-md-6 mb-4";
+
+                    let imageHTML = post.image
+                        ? `<div class="blog-image" style="height: 160px; overflow: hidden; display: flex; align-items: center; margin-top: 5px;">
+                                <img class="img-fluid w-100" src="${post.image}" style="object-fit: cover; height: 100%;" alt="">
+                            </div>`
+                        : "";
+
+                    let videoHTML = post.video
+                        ? `<div class="mt-2" style="height: 160px; overflow: hidden; display: flex; align-items: center; margin-top: 5px;">
+                                <video controls class="w-100" style="height: 100%; object-fit: cover;">
+                                    <source src="${post.video}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>`
+                        : "";
+
+                    col.innerHTML = `
+                        <div class="bg-light rounded overflow-hidden d-flex flex-column" style="height: auto;">
+                            <div class="p-3">
+                                <a class="h5 d-block mb-1 text-dark text-truncate" href="#">${post.title}</a>
+                                <p class="small m-0 text-truncate short-content" style="max-height: 40px; overflow: hidden;">
+                                    ${post.content}
+                                </p>
+                                <p class="small m-0 full-content d-none">${post.content}</p>
+                                <a href="javascript:void(0);" class="text-primary read-more">Read More</a>
+                            </div>
+                            ${imageHTML}
+                            ${videoHTML}
+                        </div>
+                    `;
+
+                    container.appendChild(col);
+                });
+
+                // Attach "Read More" toggle
+                document.querySelectorAll(".read-more").forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        let shortContent = this.previousElementSibling.previousElementSibling;
+                        let fullContent = this.previousElementSibling;
+
+                        if (fullContent.classList.contains("d-none")) {
+                            fullContent.classList.remove("d-none");
+                            shortContent.classList.add("d-none");
+                            this.textContent = "Read Less";
+                        } else {
+                            fullContent.classList.add("d-none");
+                            shortContent.classList.remove("d-none");
+                            this.textContent = "Read More";
+                        }
+                    });
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching blog posts:", error);
             });
-        });
     });
 </script>

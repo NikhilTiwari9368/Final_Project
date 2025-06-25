@@ -106,11 +106,7 @@ body {
     }
 }
 
-/* Hero header styles */
-.hero-header {
-    background: url(../img/hero.jpg) center center / cover no-repeat;
-    height: 500px; /* Set a specific height for mobile */
-}
+
 
 /* Service item styles */
 .service-item {

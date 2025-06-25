@@ -1,5 +1,4 @@
 {% include "header.html" %}
-<!-- Search Start -->
 
 <!-- Search Start -->
 <div class="container-fluid" style="background-color: #09143C; margin-top: 5rem; padding-top: 5rem; padding-bottom: 5rem;">
@@ -9,45 +8,20 @@
             <h3 class="display-8 mb-4 text-white">Discover Trusted Herbal Healthcare Professionals</h3>
             <h5 class="text-white fw-normal">Embrace the healing power of nature with our curated list of experienced herbal healthcare practitioners. Whether you seek traditional remedies or modern herbal treatments, find the right expert to guide your wellness journey.</h5>
         </div>
+
+        <!-- API-based Search -->
         <div class="mx-auto" style="width: 100%; max-width: 600px;">
-            <form method="POST" action="{% url 'doctorsearch' %}">
-                {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" name="city" class="form-control" placeholder="Search by City" style="border-color: #09143C; height: 60px;">
-                    <button class="btn" style="background-color: #09143C; color: white; border: none; width: 25%;">Search</button>
-                </div>
-            </form>
+            <div class="input-group">
+                <input id="cityInput" type="text" class="form-control" placeholder="Search by City" style="border-color: #09143C; height: 60px;">
+                <button id="searchBtn" class="btn" style="background-color: #09143C; color: white; border: none; width: 25%;">Search</button>
+            </div>
         </div>
+
+        <!-- Results -->
         <div class="mt-5">
             <h3 class="text-center text-white">Search Results</h3>
-            <div class="row">
-                {% for doctor in doctors %}
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card">
-                        <div class="row g-0">
-                            <!-- Image on the Left -->
-                            <div class="col-md-4">
-                                {% if doctor.image %}
-                                <img src="{{ doctor.image.url }}" class="img-fluid rounded-start" alt="{{ doctor.name }}" style="width: 100%; height: 100%; object-fit: cover;">
-                                {% else %}
-                                <img src="/media/doctor_images/default.jpg" class="img-fluid rounded-start" alt="No Image Available" style="width: 100%; height: 100%; object-fit: cover;">
-                                {% endif %}
-                            </div>
-                            <!-- Content on the Right -->
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ doctor.name }}</h5>
-                                    <p class="card-text"><strong>Specialty:</strong> {{ doctor.speciality }}</p>
-                                    <p class="card-text"><strong>City:</strong> {{ doctor.city }}</p>
-                                    <p class="card-text"><strong>Contact:</strong> {{ doctor.contact_info }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% empty %}
-                <p class="text-white text-center">No doctors found matching your criteria.</p>
-                {% endfor %}
+            <div class="row" id="resultsContainer">
+                <!-- JavaScript will inject cards here -->
             </div>
         </div>
     </div>
@@ -55,3 +29,48 @@
 <!-- Search End -->
 
 {% include "footer.html" %}
+
+<!-- JavaScript -->
+<script>
+    document.getElementById('searchBtn').addEventListener('click', function () {
+        const city = document.getElementById('cityInput').value;
+        const resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.innerHTML = '<p class="text-white text-center">Searching...</p>';
+
+        fetch(`/doctorsearch/api/?city=${encodeURIComponent(city)}`)
+            .then(response => response.json())
+            .then(data => {
+                resultsContainer.innerHTML = '';
+                if (data.length === 0) {
+                    resultsContainer.innerHTML = '<p class="text-white text-center">No doctors found matching your criteria.</p>';
+                    return;
+                }
+
+                data.forEach(doctor => {
+                    const card = `
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="${doctor.image || '/media/doctor_images/default.jpg'}" class="img-fluid rounded-start" alt="${doctor.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${doctor.name}</h5>
+                                        <p class="card-text"><strong>Specialty:</strong> ${doctor.speciality}</p>
+                                        <p class="card-text"><strong>City:</strong> ${doctor.city}</p>
+                                        <p class="card-text"><strong>Contact:</strong> ${doctor.contact_info}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                    resultsContainer.insertAdjacentHTML('beforeend', card);
+                });
+            })
+            .catch(err => {
+                resultsContainer.innerHTML = '<p class="text-white text-center">Error fetching data. Please try again.</p>';
+                console.error(err);
+            });
+    });
+</script>

@@ -12,7 +12,11 @@ from django.contrib.auth.decorators import login_required
 from Precaution.models import Disease 
 from django.contrib import messages
 from django.contrib.auth.models import User
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from DoctorFind.serializers import DoctorSerializer
+from django.shortcuts import render
+from products.models import Product
 
 def disease_info(request):
     # Initialize the disease variable
@@ -107,28 +111,28 @@ def about(requests):
     return render(requests , "about.html")
 
 
-def saveform(requests):
-    if requests.method == 'POST':
-        department = requests.POST.get('department')
-        doctor = requests.POST.get('doctor')
-        name = requests.POST.get('name')
-        email = requests.POST.get('email')
-        mobile_number = requests.POST.get('mobile_number')
-        appointment_date = requests.POST.get('appointment_date')
-        appointment_time = requests.POST.get('appointment_time')
+# def saveform(requests):
+#     if requests.method == 'POST':
+#         department = requests.POST.get('department')
+#         doctor = requests.POST.get('doctor')
+#         name = requests.POST.get('name')
+#         email = requests.POST.get('email')
+#         mobile_number = requests.POST.get('mobile_number')
+#         appointment_date = requests.POST.get('appointment_date')
+#         appointment_time = requests.POST.get('appointment_time')
         
-        ap = Appointment(department = department , doctor = doctor , name = name , email = email , mobile_number=mobile_number, appointment_date = appointment_date , appointment_time = appointment_time)
-        ap.save()
+#         ap = Appointment(department = department , doctor = doctor , name = name , email = email , mobile_number=mobile_number, appointment_date = appointment_date , appointment_time = appointment_time)
+#         ap.save()
         
-    return render(requests , "index.html")
+#     return render(requests , "index.html")
 
 
 def blog(requests):
     blog_posts = BlogPost.objects.all()
     return render(requests, 'blog.html', {'blog_posts': blog_posts})
 
-def contact(requests):
-    return render(requests , "contact.html") 
+def contact(request):
+    return render(request, "contact.html")
 
 def contact_view(requests):
     if requests.method == "POST":
@@ -151,23 +155,27 @@ def search(requests):
     return render(requests , "search.html") 
 
 
-def doctorsearch(request):
+@api_view(['GET'])
+def doctor_list(request):
+    city = request.GET.get('city')
     doctors = Doctor.objects.all()
-    city = request.POST.get('city')
-
     if city:
         doctors = doctors.filter(city__icontains=city)
-
-    return render(request, "search.html", {'doctors': doctors})
+    serializer = DoctorSerializer(doctors, many=True)
+    return Response(serializer.data)
 
 
 def service(requests):
     return render(requests , "service.html") 
 
     
-def team(requests):
-    products = Product.objects.all()  # Fetch all products from the database
-    return render(requests, "team.html", {'products': products})
+from django.shortcuts import render
+from products.models import Product
+
+def team(request):
+    products = Product.objects.all()
+    return render(request, 'team.html', {'products': products})
+
 
 def testimonial(requests):
     return render(requests , "testimonial.html") 
