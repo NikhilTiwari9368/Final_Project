@@ -2,5 +2,31 @@ services:
   - type: web
     name: django-app
     env: python
-    buildCommand: "pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput"
-    startCommand: "gunicorn medi.wsgi:application --bind 0.0.0.0:$PORT"
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn medi.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        value: "s^+woew8wydw4bkrrb53d=4n8g%+#mhew!vp*)1@=w47c_7v+g"
+      - key: ALLOWED_HOSTS
+        value: "dixithealthcare.com,www.dixithealthcare.com,127.0.0.1,localhost"
+      - key: DB_NAME
+        value: "railway"
+      - key: DB_USER
+        value: "root"
+      - key: DB_PASSWORD
+        value: "ZpDIlIVGIaLGYBDgjWdIwQqIUQXGkQri"
+      - key: DB_HOST
+        value: "crossover.proxy.rlwy.net"
+      - key: DB_PORT
+        value: "27322"
+      - key: EMAIL_HOST_USER
+        value: "nodecode057@gmail.com"
+      - key: EMAIL_HOST_PASSWORD
+        value: "lpis kmzn hxga ggcs"
+      - key: DEFAULT_FROM_EMAIL
+        value: "dixit.healthcare@gmail.com"
